@@ -1,44 +1,74 @@
-const { Router } = require('express');
-const { createCanvas, loadImage, registerFont } = require('canvas');
-const path = require('path');
+const { Router } = require("express");
+const { createCanvas, registerFont } = require("canvas");
+const path = require("path");
 
-// Registre a fonte instalada
-registerFont(path.join(__dirname, '..', 'node_modules', '@fontsource', 'roboto', 'files', 'roboto-latin-400-normal.woff'), { family: 'Roboto' });
+// Registra a fonte
+registerFont(
+  path.join(
+    __dirname,
+    "..",
+    "node_modules",
+    "@fontsource",
+    "roboto",
+    "files",
+    "roboto-latin-400-normal.woff"
+  ),
+  { family: "Roboto" }
+);
 
 const router = Router();
 
 const tileColors = {
-  0: '#cdc1b4',
-  2: '#eee4da',
-  4: '#ede0c8',
-  8: '#f2b179',
-  16: '#f59563',
-  32: '#f67c5f',
-  64: '#f65e3b',
-  128: '#edcf72',
-  256: '#edcc61',
-  512: '#edc850',
-  1024: '#edc53f',
-  2048: '#edc22e',
-  4096: '#3c3a32',
-  8192: '#3c3a32',
+  0: "#CDC1B4",
+  2: "#E5F5E0",
+  4: "#CCFFCC",
+  8: "#99FF99",
+  16: "#66FF66",
+  32: "#33FF33",
+  64: "#00FF00",
+  128: "#00CC00",
+  256: "#009900",
+  512: "#006600",
+  1024: "#003300",
+  2048: "#FF33CC",
+  4096: "#FF66CC",
+  8192: "#FF99CC",
 };
 
-router.get('/', async (req, res) => {
+const textColor = {
+  0: "#776E65",
+  2: "#776E65",
+  4: "#776E65",
+  8: "#FFFFFF",
+  16: "#FFFFFF",
+  32: "#FFFFFF",
+  64: "#FFFFFF",
+  128: "#FFFFFF",
+  256: "#FFFFFF",
+  512: "#FFFFFF",
+  1024: "#FFFFFF",
+  2048: "#FFFFFF",
+  4096: "#FFFFFF",
+  8192: "#FFFFFF",
+};
+
+router.get("/", async (req, res) => {
   const boardSize = 4;
   const tileSize = 100;
   const padding = 10;
   const width = boardSize * (tileSize + padding) + padding;
   const height = boardSize * (tileSize + padding) + padding;
 
-  const bgColor = '#bbada0';
-  const textColor = '#776e65';
+  const bgColor = "#BBADA0";
 
-  const board = req.query.board ? req.query.board.split('|').map(row => row.split(',').map(Number)) :
-    Array(boardSize).fill().map(() => Array(boardSize).fill(0));
+  const board = req.query.board
+    ? req.query.board.split("|").map((row) => row.split(",").map(Number))
+    : Array(boardSize)
+        .fill()
+        .map(() => Array(boardSize).fill(0));
 
   const canvas = createCanvas(width, height);
-  const context = canvas.getContext('2d');
+  const context = canvas.getContext("2d");
 
   context.fillStyle = bgColor;
   context.fillRect(0, 0, width, height);
@@ -47,19 +77,23 @@ router.get('/', async (req, res) => {
     row.forEach((value, x) => {
       const x1 = padding + x * (tileSize + padding);
       const y1 = padding + y * (tileSize + padding);
-      const color = tileColors[value] || '#3c3a32'; // Pega a cor do valor ou usa a cor padrão
+      const color = tileColors[value] || "#3c3a32";
       context.fillStyle = color;
       context.fillRect(x1, y1, tileSize, tileSize);
       if (value) {
-        context.fillStyle = textColor;
-        context.font = '40px Roboto';
+        context.fillStyle = textColor[value] || "#FFFFFF";
+        context.font = "40px Roboto";
         const textSize = context.measureText(value);
-        context.fillText(value, x1 + (tileSize - textSize.width) / 2, y1 + (tileSize + 30) / 2);
+        context.fillText(
+          value,
+          x1 + (tileSize - textSize.width) / 2,
+          y1 + (tileSize + 30) / 2
+        );
       }
     });
   });
 
-  res.set('Content-Type', 'image/png');
+  res.set("Content-Type", "image/png");
   canvas.createPNGStream().pipe(res);
 });
 
