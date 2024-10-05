@@ -1,5 +1,5 @@
 const express = require('express');
-const boardRoutes = require('./routes/board');
+const boardRoutes = require('./board');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
