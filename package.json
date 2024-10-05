@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@fontsource/roboto": "^5.1.0",
     "axios": "^1.7.7",
     "canvas": "^2.11.2",
     "express": "^4.21.0"
@@ -7,7 +8,6 @@
   "name": "2048-api",
   "version": "1.0.0",
   "main": "src/app.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
