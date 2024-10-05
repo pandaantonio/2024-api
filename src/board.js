@@ -1,10 +1,9 @@
-const express = require("express");
-const { join } = require("path");
+const { Router } = require("express");
 const { createCanvas, registerFont } = require("canvas");
 
-registerFont(join(__dirname, "fonts", "./fonts/Arial.ttf"), { family: "Arial" });
+registerFont('./fonts/Arial.ttf', { family: 'Arial' });
 
-const router = express.Router();
+const router = Router();
 
 const tileColors = {
   0: "#e0e0e0",
