@@ -4,7 +4,7 @@
     "canvas": "^2.11.2",
     "express": "^4.21.0"
   },
-  "name": "netuno-api",
+  "name": "2048-api",
   "version": "1.0.0",
   "main": "src/app.js",
   "devDependencies": {},
